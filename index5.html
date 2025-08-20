@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Would You Rather - Deep Chat</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #ffe9f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      width: 350px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    h2 { margin: 0 0 12px; }
+    p { font-size: 15px; color: #444; }
+    button {
+      margin-top: 10px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+    }
+    .option1 { background: #ffafbd; color: #fff; }
+    .option2 { background: #92dff3; color: #fff; }
+    .followup {
+      margin-top: 20px;
+      background: #f9f9f9;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Would You Rather?</h2>
+    <p id="question">Would you rather travel to space 🚀 or explore the deep ocean 🌊?</p>
+    <button class="option1" onclick="choose('space')">Travel to space 🚀</button>
+    <button class="option2" onclick="choose('ocean')">Explore the ocean 🌊</button>
+    
+    <div class="followup" id="followup"></div>
+  </div>
+
+  <script>
+    function choose(choice) {
+      const followup = document.getElementById('followup');
+      if (choice === 'space') {
+        followup.innerHTML = "<strong>Deep Question:</strong> 🌌 What would be the first thing you'd do when you step outside the spacecraft?";
+      } else {
+        followup.innerHTML = "<strong>Deep Question:</strong> 🌊 What secret of the sea would you hope to discover?";
+      }
+      followup.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

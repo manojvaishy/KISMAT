@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kismat - Find Your Destiny</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: #fef6f6;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ff2d55 0%, #ff6b81 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .tagline {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
+        .questions-container {
+            flex: 1;
+            display: flex;
+            overflow-x: hidden;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            position: relative;
+        }
+        
+        .question-slide {
+            min-width: 100%;
+            height: 100%;
+            scroll-snap-align: start;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: transform 0.5s ease;
+            position: relative;
+        }
+        
+        .question-number {
+            font-size: 16px;
+            color: #ff2d55;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .question-text {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 30px;
+            line-height: 1.4;
+            max-width: 90%;
+        }
+        
+        .answer-box {
+            width: 90%;
+            max-width: 500px;
+            height: 200px;
+            border: 2px solid #ffd6dd;
+            border-radius: 15px;
+            padding: 15px;
+            font-size: 16px;
+            resize: none;
+            outline: none;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .answer-box:focus {
+            border-color: #ff2d55;
+            box-shadow: 0 5px 15px rgba(255,45,85,0.1);
+        }
+        
+        .btn {
+            background: #ff2d55;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(255,45,85,0.3);
+        }
+        
+        .btn:hover {
+            background: #e61e4d;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255,45,85,0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #ff2d55;
+            border: 1px solid #ff2d55;
+            box-shadow: none;
+        }
+        
+        .btn-secondary:hover {
+            background: #fff5f7;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            width: 90%;
+            max-width: 500px;
+            margin-top: 20px;
+        }
+        
+        .progress-container {
+            width: 90%;
+            max-width: 500px;
+            height: 6px;
+            background: #f0f0f0;
+            border-radius: 3px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: #ff2d55;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        
+        .swipe-instruction {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+        
+        .swipe-icon {
+            display: inline-block;
+            margin: 0 5px;
+        }
+        
+        /* Animation for question slides */
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(-100%); opacity: 0; }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.5s ease forwards;
+        }
+        
+        .slide-out {
+            animation: slideOut 0.5s ease forwards;
+        }
+        
+        /* Success message */
+        .success-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        
+        .success-message.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .success-icon {
+            font-size: 60px;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        
+        .success-text {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+    </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <div class="logo">KISMAT</div>
+            <div class="tagline">Where destiny connects hearts</div>
+        </div>
+        
+        <div class="questions-container" id="questionsContainer">
+            <!-- Question 1 -->
+            <div class="question-slide active">
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 12.5%"></div>
+                </div>
+                <div class="question-number">Question 1 of 8</div>
+                <div class="question-text">What's your love language — and how did you discover it?</div>
+                <textarea class="answer-box" placeholder="Type your answer here..."></textarea>
+                <button class="btn" onclick="nextQuestion()">Save & Continue</button>
+            </div>
+            
+            <!-- Question 2 -->
+            <div class="question-slide">
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 25%"></div>
+                </div>
+                <div class="question-number">Question 2 of 8</div>
+                <div class="question-text">What kind of life do you imagine building with someone?</div>
+                <textarea class="answer-box" placeholder="Type your answer here..."></textarea>
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="prevQuestion()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="btn" onclick="nextQuestion()">Save & Continue</button>
+                </div>
+            </div>
+            
+            <!-- Question 3 -->
+            <div class="question-slide">
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 37.5%"></div>
+                </div>
+                <div class="question-number">Question 3 of 8</div>
+                <div class="question-text">What's your definition of "real" love?</div>
+                <textarea class="answer-box" placeholder="Type your answer here..."></textarea>
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="prevQuestion()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="btn" onclick="nextQuestion()">Save & Continue</button>
+                </div>
+            </div>
+            
+            <!-- Question 4 -->
+            <div class="question-slide">
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 50%"></div>
+                </div>
+                <div class="question-number">Question 4 of 8</div>
+                <div class="question-text">What kind of love do you crave but find hard to ask for?</div>
+                <textarea class="answer-box" placeholder="Type your answer here..."></textarea>
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="prevQuestion()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="btn" onclick="nextQuestion()">Save & Continue</button>
+                </div>
+            </div>
+            
+            <!-- Question 5 -->
+            <div class="question-slide">
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 62.5%"></div>
+                </div>
+                <div class="question-number">Question 5 of 8</div>
+                <div class="question-text">What does "home" feel like to you?</div>
+                <textarea class="answer-box" placeholder="Type your answer here..."></textarea>
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="prevQuestion()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="btn" onclick="nextQuestion()">Save & Continue</button>
+                </div>
+            </div>
+            
+            <!-- Question 6 -->
+            <div class="question-slide">
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 75%"></div>
+                </div>
+                <div class="question-number">Question 6 of 8</div>
+                <div class="question-text">Tell us one of your funny or crazy incident happened in your life?</div>
+                <textarea class="answer-box" placeholder="Type your answer here..."></textarea>
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="prevQuestion()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="btn" onclick="nextQuestion()">Save & Continue</button>
+                </div>
+            </div>
+            
+            <!-- Question 7 -->
+            <div class="question-slide">
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 87.5%"></div>
+                </div>
+                <div class="question-number">Question 7 of 8</div>
+                <div class="question-text">If you could send a letter to your future partner, what would it say?</div>
+                <textarea class="answer-box" placeholder="Type your answer here..."></textarea>
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="prevQuestion()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="btn" onclick="nextQuestion()">Save & Continue</button>
+                </div>
+            </div>
+            
+            <!-- Question 8 -->
+            <div class="question-slide">
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 100%"></div>
+                </div>
+                <div class="question-number">Question 8 of 8</div>
+                <div class="question-text">If our connection had a theme song playing in the background right now, what would it be?</div>
+                <textarea class="answer-box" placeholder="Type your answer here..."></textarea>
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="prevQuestion()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="btn" onclick="saveAllAnswers()">Save All Answers</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="swipe-instruction">
+            <span class="swipe-icon"><i class="fas fa-arrow-left"></i></span>
+            Swipe to navigate between questions
+            <span class="swipe-icon"><i class="fas fa-arrow-right"></i></span>
+        </div>
+        
+        <!-- Success Message -->
+        <div class="success-message" id="successMessage">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="success-text">Your answers have been saved successfully!</div>
+            <div>Finding your perfect match...</div>
+        </div>
+    </div>
+    
+    <script>
+        // Current question index
+        let currentQuestion = 0;
+        const questions = document.querySelectorAll('.question-slide');
+        const totalQuestions = questions.length;
+        const successMessage = document.getElementById('successMessage');
+        
+        // Initialize the questions container
+        const questionsContainer = document.getElementById('questionsContainer');
+        
+        // Store all answers
+        const answers = Array(totalQuestions).fill('');
+        
+        // Function to show specific question
+        function showQuestion(index) {
+            // Validate index
+            if (index < 0 || index >= totalQuestions) return;
+            
+            // Animate transition
+            questions[currentQuestion].classList.remove('active');
+            questions[currentQuestion].classList.add('slide-out');
+            
+            setTimeout(() => {
+                questions[currentQuestion].classList.remove('slide-out');
+                currentQuestion = index;
+                questions[currentQuestion].classList.add('active', 'slide-in');
+                
+                // Scroll to the question
+                questionsContainer.scrollLeft = currentQuestion * window.innerWidth;
+                
+                // After animation completes, remove the class
+                setTimeout(() => {
+                    questions[currentQuestion].classList.remove('slide-in');
+                }, 500);
+            }, 500);
+        }
+        
+        // Next question
+        function nextQuestion() {
+            // Save current answer before moving
+            answers[currentQuestion] = questions[currentQuestion].querySelector('.answer-box').value;
+            
+            if (currentQuestion < totalQuestions - 1) {
+                showQuestion(currentQuestion + 1);
+            } else {
+                // If it's the last question, save all answers
+                saveAllAnswers();
+            }
+        }
+        
+        // Previous question
+        function prevQuestion() {
+            showQuestion(currentQuestion - 1);
+        }
+        
+        // Save all answers
+        function saveAllAnswers() {
+            answers[currentQuestion] = questions[currentQuestion].querySelector('.answer-box').value;
+            
+            // Show success message
+            successMessage.classList.add('show');
+            
+            // In a real app, you would send the answers to a server here
+            console.log("All answers saved:", answers);
+            
+            // Redirect to index3.html after 3 seconds
+            setTimeout(() => {
+                window.location.href = "index3.html";
+            }, 3000);
+        }
+        
+        // Swipe functionality for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        questionsContainer.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+        
+        questionsContainer.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+        
+        function handleSwipe() {
+            const difference = touchStartX - touchEndX;
+            
+            // Swipe right (previous question)
+            if (difference > 50 && currentQuestion > 0) {
+                prevQuestion();
+            }
+            // Swipe left (next question)
+            else if (difference < -50 && currentQuestion < totalQuestions - 1) {
+                nextQuestion();
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' && currentQuestion < totalQuestions - 1) {
+                nextQuestion();
+            } else if (e.key === 'ArrowLeft' && currentQuestion > 0) {
+                prevQuestion();
+            }
+        });
+    </script>
+</body>
+</html>

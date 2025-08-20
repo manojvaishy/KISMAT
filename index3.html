@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kismat - Discover Amazing Places</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: #fff5f7;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: relative;
+            background: #f9f9f9;
+        }
+        
+        .chat-header {
+            background: linear-gradient(135deg, #ff2d55 0%, #ff6b81 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        
+        .chat-title {
+            font-weight: 600;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .chat-title i {
+            margin-right: 10px;
+        }
+        
+        .chat-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .chat-action-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .chat-action-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .messages-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f9f9f9;
+        }
+        
+        /* Place Suggestion Header */
+        .suggestion-header {
+            background: white;
+            border-radius: 18px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .suggestion-header h3 {
+            color: #ff2d55;
+            margin-bottom: 5px;
+            font-size: 18px;
+        }
+        
+        .suggestion-header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px 0;
+            margin-bottom: 15px;
+            gap: 8px;
+            scrollbar-width: none;
+        }
+        
+        .category-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .category-tab {
+            background: white;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            white-space: nowrap;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            border: 1px solid #eee;
+        }
+        
+        .category-tab.active {
+            background: #ff2d55;
+            color: white;
+            border-color: #ff2d55;
+        }
+        
+        .category-tab i {
+            margin-right: 5px;
+        }
+        
+        /* Place Cards */
+        .places-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .place-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: slideUp 0.5s ease;
+            position: relative;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .place-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+        }
+        
+        .place-image {
+            height: 180px;
+            width: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .place-card:hover .place-image {
+            transform: scale(1.05);
+        }
+        
+        .place-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(255,255,255,0.9);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #ff2d55;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .place-badge i {
+            margin-right: 5px;
+            font-size: 12px;
+        }
+        
+        .place-content {
+            padding: 15px;
+        }
+        
+        .place-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        
+        .place-name {
+            font-weight: 600;
+            font-size: 16px;
+            color: #333;
+        }
+        
+        .place-distance {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .place-description {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .place-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .place-rating {
+            display: flex;
+            align-items: center;
+            color: #ff9500;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .place-rating i {
+            margin-right: 3px;
+        }
+        
+        .place-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .place-btn {
+            border: none;
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .place-btn i {
+            margin-right: 5px;
+            font-size: 12px;
+        }
+        
+        .direction-btn {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .direction-btn:hover {
+            background: #bbdefb;
+        }
+        
+        .save-btn {
+            background: #fce4ec;
+            color: #c2185b;
+        }
+        
+        .save-btn:hover {
+            background: #f8bbd0;
+        }
+        
+        .book-btn {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .book-btn:hover {
+            background: #c8e6c9;
+        }
+        
+        /* Voting UI */
+        .voting-ui {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #eee;
+        }
+        
+        .vote-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px 25px;
+            border-radius: 50px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .vote-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.3);
+            transform: scale(0);
+            border-radius: 50px;
+            transition: transform 0.3s;
+        }
+        
+        .vote-btn:hover::after {
+            transform: scale(1);
+        }
+        
+        .vote-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .like-btn {
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+        }
+        
+        .like-btn:hover {
+            background: rgba(76, 175, 80, 0.1);
+        }
+        
+        .love-btn {
+            color: #ff2d55;
+            border: 2px solid #ff2d55;
+        }
+        
+        .love-btn:hover {
+            background: rgba(255, 45, 85, 0.1);
+        }
+        
+        /* Match Celebration */
+        .match-celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+        
+        .match-celebration.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .match-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            max-width: 80%;
+            transform: scale(0.8);
+            transition: transform 0.5s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .match-celebration.show .match-content {
+            transform: scale(1);
+        }
+        
+        .match-icon {
+            font-size: 60px;
+            color: #ff2d55;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .match-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #ff2d55;
+            margin-bottom: 10px;
+        }
+        
+        .match-text {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        
+        .match-place {
+            font-weight: 600;
+            color: #333;
+            font-size: 18px;
+            margin: 15px 0;
+        }
+        
+        .match-btn {
+            background: #ff2d55;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        
+        .match-btn:hover {
+            background: #e61e4d;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(230, 30, 77, 0.3);
+        }
+        
+        /* Input Container */
+        .input-container {
+            background: #f0f0f0;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        #messageInput {
+            flex: 1;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 15px;
+            outline: none;
+            font-size: 14px;
+            background: white;
+        }
+        
+        .send-btn {
+            background: #ff2d55;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .send-btn:hover {
+            background: #e61e4d;
+            transform: rotate(10deg);
+        }
+        
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: #ff2d55;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 5px 20px rgba(255,45,85,0.3);
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-15px); }
+            60% { transform: translateY(-10px); }
+        }
+        
+        .fab:hover {
+            transform: scale(1.1) rotate(10deg);
+            animation: none;
+        }
+    </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Confetti.js -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="chat-title">
+                <i class="fas fa-heart"></i> Discover Amazing Places
+            </div>
+            <div class="chat-actions">
+                <button class="chat-action-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="chat-action-btn">
+                    <i class="fas fa-ellipsis-v"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="messages-container" id="messagesContainer">
+            <!-- Suggestion Header -->
+            <div class="suggestion-header">
+                <h3>Perfect Places For Your Date</h3>
+                <p>Based on your shared interests and location</p>
+            </div>
+            
+            <!-- Category Tabs -->
+            <div class="category-tabs">
+                <div class="category-tab active">
+                    <i class="fas fa-utensils"></i> All
+                </div>
+                <div class="category-tab">
+                    <i class="fas fa-coffee"></i> Cafés
+                </div>
+                <div class="category-tab">
+                    <i class="fas fa-film"></i> Movies
+                </div>
+                <div class="category-tab">
+                    <i class="fas fa-tree"></i> Parks
+                </div>
+                <div class="category-tab">
+                    <i class="fas fa-glass-cheers"></i> Nightlife
+                </div>
+                <div class="category-tab">
+                    <i class="fas fa-landmark"></i> Culture
+                </div>
+                <div class="category-tab">
+                    <i class="fas fa-shopping-bag"></i> Shopping
+                </div>
+            </div>
+            
+            <!-- Places Container -->
+            <div class="places-container">
+                <!-- Café 1 -->
+                <div class="place-card">
+                    <div class="place-badge">
+                        <i class="fas fa-coffee"></i> Café
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="place-image" alt="FC Road Social">
+                    <div class="place-content">
+                        <div class="place-header">
+                            <div class="place-name">FC Road Social</div>
+                            <div class="place-distance">3-4 km</div>
+                        </div>
+                        <div class="place-description">
+                            Vibrant café with live music and delicious fusion cuisine. Perfect for long conversations with cozy seating.
+                        </div>
+                        <div class="place-footer">
+                            <div class="place-rating">
+                                <i class="fas fa-star"></i> 4.7
+                            </div>
+                            <div class="place-actions">
+                                <button class="place-btn direction-btn">
+                                    <i class="fas fa-map-marker-alt"></i> Map
+                                </button>
+                                <button class="place-btn save-btn">
+                                    <i class="far fa-heart"></i> Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="voting-ui">
+                        <button class="vote-btn like-btn" onclick="voteOnPlace(this, 'FC Road Social')">
+                            <i class="far fa-thumbs-up"></i> Like
+                        </button>
+                        <button class="vote-btn love-btn" onclick="voteOnPlace(this, 'FC Road Social')">
+                            <i class="far fa-heart"></i> Love
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Movie Theater -->
+                <div class="place-card">
+                    <div class="place-badge">
+                        <i class="fas fa-film"></i> Cinema
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="place-image" alt="PVR Cinemas">
+                    <div class="place-content">
+                        <div class="place-header">
+                            <div class="place-name">PVR Cinemas</div>
+                            <div class="place-distance">5 km</div>
+                        </div>
+                        <div class="place-description">
+                            Premium multiplex with recliner seats and Dolby Atmos. Currently showing new releases and classic films.
+                        </div>
+                        <div class="place-footer">
+                            <div class="place-rating">
+                                <i class="fas fa-star"></i> 4.5
+                            </div>
+                            <div class="place-actions">
+                                <button class="place-btn book-btn">
+                                    <i class="fas fa-ticket-alt"></i> Tickets
+                                </button>
+                                <button class="place-btn direction-btn">
+                                    <i class="fas fa-map-marker-alt"></i> Map
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="voting-ui">
+                        <button class="vote-btn like-btn" onclick="voteOnPlace(this, 'PVR Cinemas')">
+                            <i class="far fa-thumbs-up"></i> Like
+                        </button>
+                        <button class="vote-btn love-btn" onclick="voteOnPlace(this, 'PVR Cinemas')">
+                            <i class="far fa-heart"></i> Love
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Park -->
+                <div class="place-card">
+                    <div class="place-badge">
+                        <i class="fas fa-park"></i> Park
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1504851149312-7a075b496cc7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="place-image" alt="Saras Baug">
+                    <div class="place-content">
+                        <div class="place-header">
+                            <div class="place-name">Saras Baug</div>
+                            <div class="place-distance">2 km</div>
+                        </div>
+                        <div class="place-description">
+                            Beautiful lakeside park with walking trails and historic temple. Peaceful atmosphere perfect for picnics.
+                        </div>
+                        <div class="place-footer">
+                            <div class="place-rating">
+                                <i class="fas fa-star"></i> 4.8
+                            </div>
+                            <div class="place-actions">
+                                <button class="place-btn direction-btn">
+                                    <i class="fas fa-map-marker-alt"></i> Map
+                                </button>
+                                <button class="place-btn save-btn">
+                                    <i class="far fa-heart"></i> Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="voting-ui">
+                        <button class="vote-btn like-btn" onclick="voteOnPlace(this, 'Saras Baug')">
+                            <i class="far fa-thumbs-up"></i> Like
+                        </button>
+                        <button class="vote-btn love-btn" onclick="voteOnPlace(this, 'Saras Baug')">
+                            <i class="far fa-heart"></i> Love
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Nightclub -->
+                <div class="place-card">
+                    <div class="place-badge">
+                        <i class="fas fa-cocktail"></i> Nightclub
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6a3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="place-image" alt="Mi A Mi">
+                    <div class="place-content">
+                        <div class="place-header">
+                            <div class="place-name">Mi A Mi</div>
+                            <div class="place-distance">4 km</div>
+                        </div>
+                        <div class="place-description">
+                            Upscale nightclub with live DJs and craft cocktails. Sophisticated atmosphere with dancing and lounge areas.
+                        </div>
+                        <div class="place-footer">
+                            <div class="place-rating">
+                                <i class="fas fa-star"></i> 4.6
+                            </div>
+                            <div class="place-actions">
+                                <button class="place-btn book-btn">
+                                    <i class="fas fa-cocktail"></i> Reserve
+                                </button>
+                                <button class="place-btn direction-btn">
+                                    <i class="fas fa-map-marker-alt"></i> Map
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="voting-ui">
+                        <button class="vote-btn like-btn" onclick="voteOnPlace(this, 'Mi A Mi')">
+                            <i class="far fa-thumbs-up"></i> Like
+                        </button>
+                        <button class="vote-btn love-btn" onclick="voteOnPlace(this, 'Mi A Mi')">
+                            <i class="far fa-heart"></i> Love
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="input-container">
+            <input type="text" id="messageInput" placeholder="Type a message...">
+            <button class="send-btn">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+        
+        <!-- Floating Action Button -->
+        <div class="fab" onclick="showMorePlaces()">
+            <i class="fas fa-plus"></i>
+        </div>
+    </div>
+    
+    <!-- Match Celebration -->
+    <div class="match-celebration" id="matchCelebration">
+        <div class="match-content">
+            <div class="match-icon">
+                <i class="fas fa-heart"></i>
+            </div>
+            <div class="match-title">Perfect Match!</div>
+            <div class="match-text">You both loved the same place</div>
+            <div class="match-place" id="matchPlaceName">FC Road Social</div>
+            <button class="match-btn" onclick="closeMatchCelebration()">
+                Plan Your Date <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        // Store votes (simplified for demo)
+        const votes = {
+            'FC Road Social': { user1: null, user2: null },
+            'PVR Cinemas': { user1: null, user2: null },
+            'Saras Baug': { user1: null, user2: null },
+            'Mi A Mi': { user1: null, user2: null }
+        };
+        
+        // Vote on a place
+        function voteOnPlace(button, placeName) {
+            const voteType = button.classList.contains('like-btn') ? 'like' : 'love';
+            
+            // Update UI
+            const buttons = button.parentElement.querySelectorAll('.vote-btn');
+            buttons.forEach(btn => {
+                btn.querySelector('i').classList.remove('fas');
+                btn.querySelector('i').classList.add('far');
+            });
+            
+            button.querySelector('i').classList.remove('far');
+            button.querySelector('i').classList.add('fas');
+            
+            // In a real app, this would be user-specific
+            votes[placeName].user1 = voteType;
+            
+            // Simulate partner's vote (random for demo)
+            if (!votes[placeName].user2 && Math.random() > 0.6) {
+                votes[placeName].user2 = ['like', 'love'][Math.floor(Math.random() * 2)];
+                
+                // Check if both voted the same
+                if (votes[placeName].user1 === votes[placeName].user2) {
+                    celebrateMatch(placeName);
+                }
+            }
+        }
+        
+        // Celebrate when both users match
+        function celebrateMatch(placeName) {
+            document.getElementById('matchPlaceName').textContent = placeName;
+            document.getElementById('matchCelebration').classList.add('show');
+            
+            // Confetti effect
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ff2d55', '#ff6b81', '#ff9500', '#ffcc00']
+            });
+        }
+        
+        // Close match celebration
+        function closeMatchCelebration() {
+            document.getElementById('matchCelebration').classList.remove('show');
+        }
+        
+        // Show more places (demo function)
+        function showMorePlaces() {
+            alert("Loading more great date spots...");
+            // In a real app, this would load additional places
+        }
+        
+        // Category tab switching
+        const tabs = document.querySelectorAll('.category-tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // In a real app, this would filter places
+                // For demo, we'll just animate the existing ones
+                const cards = document.querySelectorAll('.place-card');
+                cards.forEach((card, index) => {
+                    card.style.animation = 'none';
+                    setTimeout(() => {
+                        card.style.animation = `slideUp 0.5s ease ${index * 0.1}s forwards`;
+                    }, 10);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

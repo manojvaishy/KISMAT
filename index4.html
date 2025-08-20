@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Couple Profile | Unlock Love Story</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ffebee, #f8bbd0, #fce4ec);
+            color: #880e4f;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(136, 14, 79, 0.2);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff4081;
+            transform: rotate(45deg);
+            opacity: 0;
+            animation: floatHeart 15s linear infinite;
+        }
+        
+        .heart:before, .heart:after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            background: #ff4081;
+            border-radius: 50%;
+            position: absolute;
+        }
+        
+        .heart:before {
+            top: -10px;
+            left: 0;
+        }
+        
+        .heart:after {
+            top: 0;
+            left: -10px;
+        }
+        
+        @keyframes floatHeart {
+            0% {
+                top: 100%;
+                left: 0%;
+                opacity: 0;
+                transform: rotate(45deg) scale(0);
+            }
+            10% {
+                opacity: 1;
+                transform: rotate(45deg) scale(1);
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                top: -10%;
+                left: 100%;
+                opacity: 0;
+                transform: rotate(45deg) scale(0.3);
+            }
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background: linear-gradient(to right, #d81b60, #ec407a);
+            color: white;
+        }
+        
+        .back-button {
+            display: flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+        
+        .back-button i {
+            margin-right: 8px;
+        }
+        
+        .header-title {
+            text-align: center;
+            flex-grow: 1;
+        }
+        
+        .header-title h1 {
+            font-size: 1.8rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header-title p {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+        
+        .next-button {
+            display: flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .next-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(5px);
+        }
+        
+        .next-button i {
+            margin-left: 8px;
+        }
+        
+        .profile-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 30px;
+        }
+        
+        .profile-image {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid #f8bbd0;
+            box-shadow: 0 8px 25px rgba(136, 14, 79, 0.3);
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+        
+        .profile-quote {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            padding: 25px;
+            border-radius: 15px;
+            background: rgba(248, 187, 208, 0.3);
+            border-left: 4px solid #ec407a;
+            position: relative;
+        }
+        
+        .profile-quote p {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            font-weight: 300;
+            font-style: italic;
+            color: #880e4f;
+        }
+        
+        .profile-quote::before {
+            content: '"';
+            font-size: 5rem;
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            opacity: 0.1;
+            font-family: Georgia, serif;
+            color: #ec407a;
+        }
+        
+        .unlock-section {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .unlock-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 16px 35px;
+            background: linear-gradient(45deg, #ec407a, #d81b60);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(236, 64, 122, 0.5);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .unlock-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(236, 64, 122, 0.6);
+            background: linear-gradient(45deg, #f06292, #ec407a);
+        }
+        
+        .unlock-button:active {
+            transform: translateY(0);
+        }
+        
+        .unlock-button i {
+            margin-right: 10px;
+        }
+        
+        /* Shine effect */
+        .unlock-button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0.2),
+                rgba(255, 255, 255, 0.1) 20%,
+                rgba(255, 255, 255, 0) 40%,
+                rgba(255, 255, 255, 0.3) 70%,
+                rgba(255, 255, 255, 0.1) 80%,
+                rgba(255, 255, 255, 0)
+            );
+            transform: rotate(30deg);
+            transition: all 0.5s;
+            opacity: 0;
+        }
+        
+        .unlock-button:hover::after {
+            animation: shine 1.5s ease-out infinite;
+        }
+        
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(30deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(30deg);
+                opacity: 0;
+            }
+        }
+        
+        .hidden-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.8s ease;
+            background: rgba(248, 187, 208, 0.2);
+            border-radius: 15px;
+            margin-top: 20px;
+            width: 100%;
+        }
+        
+        .hidden-content.show {
+            max-height: 1000px;
+        }
+        
+        .hidden-content-inner {
+            padding: 30px;
+        }
+        
+        .content-section {
+            margin-bottom: 25px;
+        }
+        
+        .content-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(136, 14, 79, 0.1);
+            color: #d81b60;
+        }
+        
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .detail-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .detail-icon {
+            width: 30px;
+            color: #ec407a;
+            font-size: 1.2rem;
+            margin-right: 15px;
+            margin-top: 2px;
+        }
+        
+        .detail-text {
+            flex: 1;
+        }
+        
+        .detail-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 4px;
+            color: #880e4f;
+        }
+        
+        .detail-value {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #880e4f;
+        }
+        
+        .story-section {
+            line-height: 1.6;
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            border-left: 3px solid #ec407a;
+        }
+        
+        .story-section p {
+            margin-bottom: 15px;
+            color: #880e4f;
+        }
+        
+        .counter {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            opacity: 0.7;
+            font-size: 0.9rem;
+            color: #880e4f;
+        }
+        
+        .counter-number {
+            background: #ec407a;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            margin: 0 10px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            opacity: 0.7;
+            font-size: 0.9rem;
+            color: #880e4f;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .back-button {
+                align-self: flex-start;
+            }
+            
+            .next-button {
+                align-self: flex-end;
+            }
+            
+            .profile-quote p {
+                font-size: 1.2rem;
+            }
+            
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Animation for unlock */
+        @keyframes unlockAnimation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .unlocked {
+            animation: unlockAnimation 0.5s ease;
+        }
+        
+        /* Heart popup animation */
+        @keyframes heartPopup {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .heart-popup {
+            position: absolute;
+            font-size: 2rem;
+            color: #ec407a;
+            opacity: 0;
+            z-index: 100;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-container" id="heartsContainer"></div>
+    
+    <div class="container">
+        <div class="header">
+            <a href="index3.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+            <div class="header-title">
+                <h1>Profile #6</h1>
+                <p>The Staring Contest</p>
+            </div>
+            <a href="index5.html" class="next-button">
+                Next <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+        
+        <div class="profile-content">
+            <div class="profile-image">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80" alt="Mysterious Couple">
+            </div>
+            
+            <div class="profile-quote">
+                <p>I once lost a staring contest with a squirrel. Proudly, I stared it down until it left. The squirrel, however, never returned.</p>
+            </div>
+            
+            <div class="unlock-section">
+                <button class="unlock-button" id="unlockButton">
+                    <i class="fas fa-lock"></i> Unlock Their Story
+                </button>
+            </div>
+            
+            <div class="hidden-content" id="hiddenContent">
+                <div class="hidden-content-inner">
+                    <div class="content-section">
+                        <h3>About Them</h3>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="detail-text">
+                                    <div class="detail-label">Names</div>
+                                    <div class="detail-value">Alex & Taylor</div>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <div class="detail-text">
+                                    <div class="detail-label">Together Since</div>
+                                    <div class="detail-value">April 2018</div>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="detail-text">
+                                    <div class="detail-label">Location</div>
+                                    <div class="detail-value">Pacific Northwest</div>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-tree"></i>
+                                </div>
+                                <div class="detail-text">
+                                    <div class="detail-label">Shared Passion</div>
+                                    <div class="detail-value">Wildlife & Nature</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="content-section">
+                        <h3>Their Story</h3>
+                        <div class="story-section">
+                            <p>Alex and Taylor met during a wildlife conservation project in the forests of Oregon. Their first interaction was anything but ordinary - both were trying to photograph the same elusive red squirrel when they literally bumped into each other.</p>
+                            
+                            <p>The "staring contest" story refers to their third date, when they went hiking and encountered a particularly bold squirrel. Taylor insisted they could outstare the creature, while Alex laughed and took pictures. After what felt like an eternity, the squirrel eventually scurried away, but Taylor claimed victory anyway.</p>
+                            
+                            <p>This became their metaphor for relationships - sometimes you think you're winning by being stubborn, but real connection requires knowing when to look away and laugh together.</p>
+                            
+                            <p>They now run a small wildlife sanctuary together and continue to find joy in the simple, silly moments that brought them together.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="content-section">
+                        <h3>Special Memories</h3>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                                <div class="detail-text">
+                                    <div class="detail-label">First Date</div>
+                                    <div class="detail-value">Photography workshop</div>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-gem"></i>
+                                </div>
+                                <div class="detail-text">
+                                    <div class="detail-label">Engagement</div>
+                                    <div class="detail-value">At the same squirrel spot</div>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-home"></i>
+                                </div>
+                                <div class="detail-text">
+                                    <div class="detail-label">Dream</div>
+                                    <div class="detail-value">Cabin in the woods</div>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-paw"></i>
+                                </div>
+                                <div class="detail-text">
+                                    <div class="detail-label">Pet</div>
+                                    <div class="detail-value">Rescue squirrel named Champ</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="counter">
+                <span>Profile</span>
+                <div class="counter-number">6</div>
+                <span>of 12</span>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 The Staring Contest | Uncover hidden stories</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const unlockButton = document.getElementById('unlockButton');
+            const hiddenContent = document.getElementById('hiddenContent');
+            const heartsContainer = document.getElementById('heartsContainer');
+            
+            // Create floating hearts
+            function createHearts() {
+                for (let i = 0; i < 25; i++) {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDelay = Math.random() * 15 + 's';
+                    heart.style.transform = `rotate(45deg) scale(${Math.random() * 0.5 + 0.5})`;
+                    heartsContainer.appendChild(heart);
+                }
+            }
+            
+            // Create heart popup animation
+            function createHeartPopup(x, y) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart-popup');
+                heart.innerHTML = '<i class="fas fa-heart"></i>';
+                heart.style.left = x + 'px';
+                heart.style.top = y + 'px';
+                document.body.appendChild(heart);
+                
+                // Animate the heart
+                heart.style.animation = 'heartPopup 1s forwards';
+                
+                // Remove after animation
+                setTimeout(() => {
+                    heart.remove();
+                }, 1000);
+            }
+            
+            unlockButton.addEventListener('click', function(e) {
+                // Get mouse position for heart popup
+                const rect = unlockButton.getBoundingClientRect();
+                const x = rect.left + rect.width/2;
+                const y = rect.top + rect.height/2;
+                
+                // Create multiple heart popups
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        createHeartPopup(
+                            x + (Math.random() * 100 - 50),
+                            y + (Math.random() * 100 - 50)
+                        );
+                    }, i * 200);
+                }
+                
+                // Change button text and icon
+                unlockButton.innerHTML = '<i class="fas fa-unlock"></i> Unlocked';
+                unlockButton.style.background = 'linear-gradient(45deg, #f06292, #ec407a)';
+                unlockButton.classList.add('unlocked');
+                
+                // Show hidden content
+                hiddenContent.classList.add('show');
+                
+                // Disable the button after clicking
+                unlockButton.disabled = true;
+                
+                // Add a slight animation effect to the profile image
+                document.querySelector('.profile-image').style.transform = 'scale(1.05)';
+                document.querySelector('.profile-image img').style.filter = 'grayscale(0%) brightness(1)';
+                
+                // Change cursor to indicate button is disabled
+                unlockButton.style.cursor = 'default';
+            });
+            
+            // Initialize the floating hearts
+            createHearts();
+        });
+    </script>
+</body>
+</html>
