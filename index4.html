@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Couple Profile | Unlock Love Story</title>
+    <title>Alex's Profile | Unlock My Story</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -28,7 +28,7 @@
         .container {
             max-width: 900px;
             width: 100%;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 15px 30px rgba(136, 14, 79, 0.2);
@@ -53,7 +53,7 @@
             background: #ff4081;
             transform: rotate(45deg);
             opacity: 0;
-            animation: floatHeart 15s linear infinite;
+            animation: floatHeart 10s linear infinite;
         }
         
         .heart:before, .heart:after {
@@ -77,20 +77,20 @@
         
         @keyframes floatHeart {
             0% {
-                top: 100%;
+                top: -10%;
                 left: 0%;
                 opacity: 0;
                 transform: rotate(45deg) scale(0);
             }
             10% {
-                opacity: 1;
+                opacity: 0.8;
                 transform: rotate(45deg) scale(1);
             }
             90% {
-                opacity: 0.8;
+                opacity: 0.6;
             }
             100% {
-                top: -10%;
+                top: 100%;
                 left: 100%;
                 opacity: 0;
                 transform: rotate(45deg) scale(0.3);
@@ -189,6 +189,7 @@
             height: 100%;
             object-fit: cover;
             transition: all 0.5s ease;
+            filter: grayscale(30%) brightness(1.1);
         }
         
         .profile-quote {
@@ -379,6 +380,21 @@
             color: #880e4f;
         }
         
+        .hobbies-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .hobby-tag {
+            background: rgba(236, 64, 122, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #880e4f;
+        }
+        
         .counter {
             display: flex;
             justify-content: center;
@@ -468,55 +484,55 @@
     
     <div class="container">
         <div class="header">
-            <a href="index3.html" class="back-button">
+            <a href="#" class="back-button">
                 <i class="fas fa-arrow-left"></i> Back
             </a>
             <div class="header-title">
                 <h1>Profile #6</h1>
-                <p>The Staring Contest</p>
+                <p>Meet Alex</p>
             </div>
-            <a href="index5.html" class="next-button">
+            <a href="#" class="next-button">
                 Next <i class="fas fa-arrow-right"></i>
             </a>
         </div>
         
         <div class="profile-content">
             <div class="profile-image">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80" alt="Mysterious Couple">
+                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80" alt="Alex">
             </div>
             
             <div class="profile-quote">
-                <p>I once lost a staring contest with a squirrel. Proudly, I stared it down until it left. The squirrel, however, never returned.</p>
+                <p>"Life is an adventure, and I'm here to explore every bit of it with an open heart."</p>
             </div>
             
             <div class="unlock-section">
                 <button class="unlock-button" id="unlockButton">
-                    <i class="fas fa-lock"></i> Unlock Their Story
+                    <i class="fas fa-lock"></i> Unlock My Profile
                 </button>
             </div>
             
             <div class="hidden-content" id="hiddenContent">
                 <div class="hidden-content-inner">
                     <div class="content-section">
-                        <h3>About Them</h3>
+                        <h3>About Me</h3>
                         <div class="detail-grid">
                             <div class="detail-item">
                                 <div class="detail-icon">
                                     <i class="fas fa-user"></i>
                                 </div>
                                 <div class="detail-text">
-                                    <div class="detail-label">Names</div>
-                                    <div class="detail-value">Alex & Taylor</div>
+                                    <div class="detail-label">Name</div>
+                                    <div class="detail-value">Alex Johnson</div>
                                 </div>
                             </div>
                             
                             <div class="detail-item">
                                 <div class="detail-icon">
-                                    <i class="fas fa-heart"></i>
+                                    <i class="fas fa-birthday-cake"></i>
                                 </div>
                                 <div class="detail-text">
-                                    <div class="detail-label">Together Since</div>
-                                    <div class="detail-value">April 2018</div>
+                                    <div class="detail-label">Age</div>
+                                    <div class="detail-value">28 years</div>
                                 </div>
                             </div>
                             
@@ -526,75 +542,149 @@
                                 </div>
                                 <div class="detail-text">
                                     <div class="detail-label">Location</div>
-                                    <div class="detail-value">Pacific Northwest</div>
+                                    <div class="detail-value">Seattle, Washington</div>
                                 </div>
                             </div>
                             
                             <div class="detail-item">
                                 <div class="detail-icon">
-                                    <i class="fas fa-tree"></i>
+                                    <i class="fas fa-graduation-cap"></i>
                                 </div>
                                 <div class="detail-text">
-                                    <div class="detail-label">Shared Passion</div>
-                                    <div class="detail-value">Wildlife & Nature</div>
+                                    <div class="detail-label">Profession</div>
+                                    <div class="detail-value">Wildlife Photographer</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
                     <div class="content-section">
-                        <h3>Their Story</h3>
-                        <div class="story-section">
-                            <p>Alex and Taylor met during a wildlife conservation project in the forests of Oregon. Their first interaction was anything but ordinary - both were trying to photograph the same elusive red squirrel when they literally bumped into each other.</p>
-                            
-                            <p>The "staring contest" story refers to their third date, when they went hiking and encountered a particularly bold squirrel. Taylor insisted they could outstare the creature, while Alex laughed and took pictures. After what felt like an eternity, the squirrel eventually scurried away, but Taylor claimed victory anyway.</p>
-                            
-                            <p>This became their metaphor for relationships - sometimes you think you're winning by being stubborn, but real connection requires knowing when to look away and laugh together.</p>
-                            
-                            <p>They now run a small wildlife sanctuary together and continue to find joy in the simple, silly moments that brought them together.</p>
+                        <h3>My Hobbies & Interests</h3>
+                        <div class="hobbies-section">
+                            <span class="hobby-tag">Photography</span>
+                            <span class="hobby-tag">Hiking</span>
+                            <span class="hobby-tag">Wildlife Conservation</span>
+                            <span class="hobby-tag">Painting</span>
+                            <span class="hobby-tag">Reading</span>
+                            <span class="hobby-tag">Coffee Brewing</span>
+                            <span class="hobby-tag">Yoga</span>
+                            <span class="hobby-tag">Traveling</span>
                         </div>
                     </div>
                     
                     <div class="content-section">
-                        <h3>Special Memories</h3>
+                        <h3>What I Like</h3>
                         <div class="detail-grid">
                             <div class="detail-item">
                                 <div class="detail-icon">
-                                    <i class="fas fa-camera"></i>
+                                    <i class="fas fa-heart"></i>
                                 </div>
                                 <div class="detail-text">
-                                    <div class="detail-label">First Date</div>
-                                    <div class="detail-value">Photography workshop</div>
+                                    <div class="detail-label">Favorite Activities</div>
+                                    <div class="detail-value">Sunrise hikes, coffee shops, bookstores</div>
                                 </div>
                             </div>
                             
                             <div class="detail-item">
                                 <div class="detail-icon">
-                                    <i class="fas fa-gem"></i>
+                                    <i class="fas fa-utensils"></i>
                                 </div>
                                 <div class="detail-text">
-                                    <div class="detail-label">Engagement</div>
-                                    <div class="detail-value">At the same squirrel spot</div>
+                                    <div class="detail-label">Favorite Foods</div>
+                                    <div class="detail-value">Italian cuisine, sushi, dark chocolate</div>
                                 </div>
                             </div>
                             
                             <div class="detail-item">
                                 <div class="detail-icon">
-                                    <i class="fas fa-home"></i>
+                                    <i class="fas fa-music"></i>
                                 </div>
                                 <div class="detail-text">
-                                    <div class="detail-label">Dream</div>
-                                    <div class="detail-value">Cabin in the woods</div>
+                                    <div class="detail-label">Music Taste</div>
+                                    <div class="detail-value">Indie folk, acoustic, jazz</div>
                                 </div>
                             </div>
                             
                             <div class="detail-item">
                                 <div class="detail-icon">
-                                    <i class="fas fa-paw"></i>
+                                    <i class="fas fa-film"></i>
                                 </div>
                                 <div class="detail-text">
-                                    <div class="detail-label">Pet</div>
-                                    <div class="detail-value">Rescue squirrel named Champ</div>
+                                    <div class="detail-label">Movies & Shows</div>
+                                    <div class="detail-value">Documentaries, romantic comedies</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="content-section">
+                        <h3>What I Don't Like</h3>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-times-circle"></i>
+                                </div>
+                                <div class="detail-text">
+                                    <div class="detail-label">Pet Peeves</div>
+                                    <div class="detail-value">Being late, dishonesty, loud noises</div>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-ban"></i>
+                                </div>
+                                <div class="detail-text">
+                                    <div class="detail-label">Dislikes</div>
+                                    <div class="detail-value">Crowded places, extreme sports, spicy food</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="content-section">
+                        <h3>My Story</h3>
+                        <div class="story-section">
+                            <p>I'm a passionate wildlife photographer based in the beautiful Pacific Northwest. Growing up surrounded by nature, I developed a deep appreciation for the environment and all its creatures.</p>
+                            
+                            <p>My journey into photography began during college when I volunteered for a wildlife conservation project. I discovered that through my lens, I could capture the beauty of nature and share it with others, inspiring them to protect our planet.</p>
+                            
+                            <p>When I'm not out in the wilderness with my camera, you can find me exploring local coffee shops, reading in a quiet corner of a bookstore, or practicing yoga at sunrise. I believe in living intentionally and finding joy in life's simple pleasures.</p>
+                            
+                            <p>I'm looking for someone who shares my love for adventure and appreciation for quiet moments. Someone who understands that the best conversations happen during long walks and that sometimes the most memorable dates are the simplest ones.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="content-section">
+                        <h3>My Ideal Match</h3>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-smile"></i>
+                                </div>
+                                <div class="detail-text">
+                                    <div class="detail-label">Personality</div>
+                                    <div class="detail-value">Kind, adventurous, good sense of humor</div>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-hiking"></i>
+                                </div>
+                                <div class="detail-text">
+                                    <div class="detail-label">Interests</div>
+                                    <div class="detail-value">Nature, photography, or willingness to learn</div>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <div class="detail-text">
+                                    <div class="detail-label">Values</div>
+                                    <div class="detail-value">Honesty, compassion, environmental awareness</div>
                                 </div>
                             </div>
                         </div>
@@ -610,7 +700,7 @@
         </div>
         
         <footer>
-            <p>© 2023 The Staring Contest | Uncover hidden stories</p>
+            <p>© 2023 Heart Connections | Find your perfect match</p>
         </footer>
     </div>
 
@@ -626,7 +716,7 @@
                     const heart = document.createElement('div');
                     heart.classList.add('heart');
                     heart.style.left = Math.random() * 100 + 'vw';
-                    heart.style.animationDelay = Math.random() * 15 + 's';
+                    heart.style.animationDelay = Math.random() * 10 + 's';
                     heart.style.transform = `rotate(45deg) scale(${Math.random() * 0.5 + 0.5})`;
                     heartsContainer.appendChild(heart);
                 }
@@ -667,7 +757,7 @@
                 }
                 
                 // Change button text and icon
-                unlockButton.innerHTML = '<i class="fas fa-unlock"></i> Unlocked';
+                unlockButton.innerHTML = '<i class="fas fa-unlock"></i> Profile Unlocked';
                 unlockButton.style.background = 'linear-gradient(45deg, #f06292, #ec407a)';
                 unlockButton.classList.add('unlocked');
                 
@@ -679,7 +769,7 @@
                 
                 // Add a slight animation effect to the profile image
                 document.querySelector('.profile-image').style.transform = 'scale(1.05)';
-                document.querySelector('.profile-image img').style.filter = 'grayscale(0%) brightness(1)';
+                document.querySelector('.profile-image img').style.filter = 'grayscale(0%) brightness(1.1)';
                 
                 // Change cursor to indicate button is disabled
                 unlockButton.style.cursor = 'default';
